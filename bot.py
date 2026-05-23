@@ -20,13 +20,13 @@ def get_fintech_news():
 
 def format_message(articles):
     today = date.today().strftime("%B %d, %Y")
-    message = f"📰 *Fintech & Payments News — {today}*\n\n"
+    message = f"📰 Fintech & Payments News — {today}\n\n"
     for i, article in enumerate(articles[:5], 1):
-        title = article.get("title", "No title").replace(".", "\\.").replace("!", "\\!").replace("-", "\\-").replace("(", "\\(").replace(")", "\\)").replace("[", "\\[").replace("]", "\\]")
+        title = article.get("title", "No title")
         url = article.get("url", "")
         source = article.get("source", {}).get("name", "Unknown")
-        message += f"{i}\\. [{title}]({url})\n_{source}_\n\n"
-    message += "💡 _Stay ahead in fintech\\!_"
+        message += f"{i}. {title}\n{url}\n{source}\n\n"
+    message += "💡 Stay ahead in fintech!"
     return message
 
 def send_to_telegram(message):
@@ -34,7 +34,6 @@ def send_to_telegram(message):
     payload = {
         "chat_id": TELEGRAM_CHAT_ID,
         "text": message,
-        "parse_mode": "MarkdownV2",
         "disable_web_page_preview": False
     }
     r = requests.post(url, json=payload)
